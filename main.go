@@ -1,11 +1,20 @@
 package main
 
 import (
-  "net/http"
+	"context"
+	"net/http"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 func main(){
+  client, _ := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://leslieangr:anggraini168@cluster0.7fxxk.mongodb.net/lisender?retryWrites=true&w=majority"))
+  _ = client.Connect(context.TODO())
+
+  collection := client.Database("testing").Collection("numbers")
+
   e := echo.New()
 
   e.GET("/index", func(c echo.Context) error{
@@ -36,4 +45,5 @@ func main(){
   })
 
   e.Start(":2121")
+
 }
